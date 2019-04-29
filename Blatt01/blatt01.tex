@@ -1,0 +1,200 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 01 \\ Gruppe 055}
+\author{Marco Deuscher}
+\date{April 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Zahlen Konvertierung}
+\paragraph{(a)}
+\begin{align*}
+    89_{10} \rightarrow x_2\\
+    89\div2 &= 44 \quad R=1\\
+    44\div2&=22 \quad R=0\\
+    22\div2&=11 \quad R=0\\
+    11\div2&=5 \quad R=1\\
+    5\div2&=2 \quad R=1\\
+    2\div2&=1 \quad R=0\\
+    1\div2&=0 \quad R=1\\
+    \Rightarrow x_2&=1011001
+\end{align*}
+
+\paragraph{(b)}
+\begin{align*}
+    32_7 \rightarrow x_5\text{ Division im Dezimalsystem einfacher}\\
+    3*7^1+2*7^0&=23_{10}\\
+    23\div5&=4\quad R=3\\
+    4\div5&=0\quad R=4\\
+    \Rightarrow x_5&=43\\
+\end{align*}
+
+\paragraph{(c)}
+\begin{align*}
+    4360_{10}\rightarrow x_2\\
+    4360=4096+256+8=2^{12}+2^8+2^3\\
+    &1000\;0000\;0000\\
+    +&0000\;1000\;0000\\
+    +&0000\;0000\;0100\\
+    =&1000\;1000\;0100\\
+\end{align*}
+
+\paragraph{(d)}
+\begin{align*}
+    1414215376_8 \rightarrow x_2 \rightarrow x_{16}\\
+    x_2 = 001\;100\;001\;100\;010\;001\;101\;011\;111\;110\\
+    00\;1100\;0011\;0001\;0001\;1010\;1111\;1110\;\\
+    \Rightarrow x_{16}=C311AFE
+\end{align*}
+
+
+\section{Zahlen Konvertierung II}
+\paragraph{(a)}
+\begin{align*}
+    CAFFEE_{16}\rightarrow x_8\\
+    1100\;1010\;1111\;1111\;1110\;1110\\
+    110\;010\;101\;111\;111\;111\;101\;110\\
+    \Rightarrow x_8 = 62577756_8
+\end{align*}
+
+\paragraph{(b)}
+\begin{align*}
+    3072_{10}\rightarrow x_2\\
+    3072=2048+1024=2^{11}+2^{10}\\
+    &0100\;0000\;0000\\
+    +&0010\;0000\;0000\\
+    =&0110\;0000\;0000\\
+\end{align*}
+
+\paragraph{(c)}
+\begin{align*}
+    1724656_8 \rightarrow x_{32}\\
+    \text{$32=2^5$}\rightarrow \text{5bit pro Zahl}\\
+    &001\;111\;010\;100\;110\;101\;110\\
+    =&0\;01111\;01010\;01101\;01110 = FADE\\
+\end{align*}
+
+\paragraph{(d)}
+\begin{align*}
+    1316_{10}\rightarrow x_2\\
+    1316 = 1024+256+32+4=2^{10}+2^8+2^5+2^2\\
+    &10\;0000\;0000\\
+    +&00\;1000\;0000\\
+    +&00\;0001\;0000\\
+    +&00\;0000\;0010\\
+    =&10\;1001\;0010\\
+\end{align*}
+
+\section{Binäre Addition}
+\paragraph{(a)}
+\begin{align*}
+    &101\;1001\\
+    +&001\;1000\\
+    +&011\;0000\\
+    =&111\;0001\\
+\end{align*}
+
+\paragraph{(b)}
+\begin{align*}
+    &0010\;1101\\
+    +&0101\;1111\\
+    +&1111\;1110\\
+    =&1000\;1100\\
+\end{align*}
+
+\paragraph{(c)}
+\begin{align*}
+    &0100\;1100\\
+    +&0110\;0010\\
+    +&0100\;0000\\
+    =&1010\;1110\\
+\end{align*}
+
+\paragraph{(d)}
+\begin{align*}
+    &0010\;1011\\
+    +&0011\;0111\\
+    +&0111\;1110\\
+    =&0110\;0010\\
+\end{align*}
+
+
+\section{Komplementbildung}
+\paragraph{(a)}
+\begin{align*}
+    2018_{10}&=0000\;0111\;1110\;0010\\
+    \text{Invertieren liefert dann}\\
+    ~0000\;0111\;1110\;0010 &= 1111\;1000\;0001\;1101\\
+    \text{+1:}\\
+    -2018_{10} &= 1111\;1000\;0001\;1110_2\\
+\end{align*}
+
+\paragraph{(b)}
+\begin{align*}
+    27347_{10}&=0110\;1010\;1101\;0011_2\\
+    \text{Invertieren liefert dann}\\
+    ~0110\;1010\;1101\;0011 &= 1001\;0101\;0010\;1100\\
+    \text{+1:}\\
+    -27347_{10} &= 1001\;0101\;0010\;1101\\
+\end{align*}
+
+\section{Binäre Multiplikation}
+\paragraph{(a)}
+\begin{align*}
+    &010110*111=10011010\\
+    &01011000\\
+    +&00101100\\
+    +&00010110\\
+    +&01111000\\
+    =&10011010\\
+\end{align*}
+
+\paragraph{(b)}
+\begin{align*}
+    &10010010*1001001=10\;1001\;1010\;0010\\
+    &10\;0100\;1000\;0000\\
+    +&00\;0000\;0000\;0000\\
+    +&00\;0000\;0000\;0000\\
+    +&00\;0100\;1001\;0000\\
+    +&00\;0000\;0000\;0000\\
+    +&00\;0000\;0000\;0000\\
+    +&00\;0001\;1001\;0010\\
+    =&10\;1001\;1010\;0010\\
+\end{align*}
+
+
+\paragraph{(c)}
+\begin{align*}
+    &10011110*10101=1100\;1111\;0110\\
+    &1001\;1110\;0000\\
+    +&0000\;0000\;0000\\
+    +&0010\;0111\;1000\\
+    +&0000\;0000\;0000\\
+    +&0000\;1001\;1110\\
+    =&1100\;1111\;0110\\
+\end{align*}
+\end{document}
+
