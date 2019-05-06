@@ -8,6 +8,7 @@
 \usepackage{esvect}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{pgfplots}
 \usepackage{verbatim}
@@ -56,7 +57,56 @@ Da die Zahl aus zweier Potenzen zusammengesetzt werden kann, ist sie exakt darst
 \end{align*}
 Die Zahl ist nicht exakt darstellbar. $|Z_{orginal}-Z_{Umwandlung}|=0,005$
 
+\section{Gleitkomma Darstellung}
+Ergebnisse werden im folgenden in drei Gruppen unterteilt
+\begin{enumerate}
+    \item Vorzeichen
+    \item Exponent
+    \item Mantisse
+\end{enumerate}
+Außerdem ist der Bias mit $B=127$ gegeben. Es wird ein Vorzeichenbit verwendet, der Exponent hat eine Länge von 8bit und die Mantisse eine Länge von 23bit.
+\paragraph{(a)}
+\begin{align*}
+    x=(-1)^v\cdot m \cdot2^{e-B} \Rightarrow m=\frac{x}{2^{e-B}}=1,109375
+\end{align*}
+Der Exponent ist gegegeben durch $127+4=131$ was in binär Darstellung wiederum $10000011$ entspricht. Durch Umwandeln Nachkommastellen der Mantisse in binäre Darstellung erhält man dann die folgende Darstellung
 
+\begin{align*}
+    0 \quad 10000011 \quad 00011100\dots 0
+\end{align*}
+
+\paragraph{(b)}
+Analoges Vorgehen wie in der (a) liefert dann
+\begin{align*}
+    m=\frac{x}{2}=1,8125
+\end{align*}
+Für den Exponenten erhält man $127+1=128$. Durch Umwandeln in die binäre Darstellung erhält man dann
+\begin{align*}
+    0 \quad 10000000 \quad 110100\dots 0
+\end{align*}
+
+
+\section{Gleitkomma Operationen}
+\todo[inline]{Noch zu bearbeiten}
+
+
+\section{UTF8 Darstellung}
+Hierbei ist die \color{red} Startsequenz, \color{cyan} Data, \color{olive} Beginn eines neues Bytes \color{black} jeweils markiert. 
+\paragraph{(a)}
+\begin{align*}
+    \text{202e}=0010\;0000\;0010\;1110\\
+    \color{red}1110\;\color{cyan}0010\;\color{olive}10\color{cyan}00\;0000\;\color{olive}10\color{cyan}10\;1110\\
+\end{align*}
+
+
+\paragraph{(b)}
+\begin{align*}
+    \color{red}11110\; \color{cyan} 000\; \color{olive}10\; \color{cyan}011111\; \color{olive}10\;\color{cyan}011000\; \color{olive}10 \;\color{cyan} 001000\\
+\end{align*}
+Wandelt man die \color{cyan}cyan \color{black} markierten Daten in Hex. Darstellung um, erhält man den Unicode Character U+1F608.
+
+\section{Bitinterpretation}
+\todo[inline]{Noch zu bearbeiten}
 
 
 
