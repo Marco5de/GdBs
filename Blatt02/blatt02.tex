@@ -106,8 +106,31 @@ Hierbei ist die \color{red} Startsequenz, \color{cyan} Data, \color{olive} Begin
 Wandelt man die \color{cyan}cyan \color{black} markierten Daten in Hex. Darstellung um, erhält man den Unicode Character U+1F608.
 
 \section{Bitinterpretation}
-\todo[inline]{Noch zu bearbeiten}
 
+\paragraph{(a)}
+Umwandeln von $0x447b7d00$ in die binäre Darstellung. Hierbei markiert sind \color{green} Vorzeichen \color{black},\color{blue} Exponent\color{black},\color{red} Mantisse.
+\begin{align*}
+    \color{green}0\color{blue}100\;0100\;0\color{red}111\;1011\;0111\;1101\;0000\;0000\;
+\end{align*}
+\color{black}
+Vorzeichen lässt sich direkt ablesen $\rightarrow$ Zahl ist positiv\\
+Exponent ist gegeben durch $0\text{b}10001000=128+8=136$. Mit dem Bias ergibt sich dann $e=9$.\\ Für die Mantisse erhält man durch die Stufenzahlendarstellung den folgenden Wert
+\begin{align*}
+    m_2=1111\;0110\;1111\;1010_2=\frac{1}{2}+\frac{1}{4}+\frac{1}{8}+\frac{1}{16}+\frac{1}{64}+\frac{1}{128}+\frac{1}{512}++\frac{1}{1024}+\frac{1}{2048}\\+\frac{1}{4096}+\frac{1}{8192}+\frac{1}{32768}=0.9647521973_{10}
+\end{align*}
+Dann erhält man für die Gleitkommazahl den folgenden Wert
+\begin{align*}
+    z_{IEEE754}=(-1)^0\cdot 1.9647521973_10*2^{136-127}=1005,953125_{10}
+\end{align*}
+
+
+\paragraph{(b)}
+Die hexadezimal Darstellung der ersten 16bit Integer ist $0\text{x}447b$. Umwandlung in binäre liefert dann $0\text{b}0100\;0100\;0111\;1011$. Mit dem Stufenzahlenverfahren erhält man dann einen Wert von $z_{16bit,1}=17531$.\\
+Für die zweite Zahl ergibt sich dann $0\text{x}7d00=0\text{b}0111\;1101\;0000\;0000=32000_{10}$
+
+
+\paragraph{(c)}
+\todo[inline]{Noch zu bearbeiten}
 
 
 \end{document}
