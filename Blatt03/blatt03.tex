@@ -37,7 +37,7 @@
 	\item Initialer Zustand: R0=0xe6 R1=0x04 PC=0x00
 	\item Ausführen von 0x00: R0=0xa4 R1=0x04 PC=0x04
 	\item Ausführen von 0x04: R0=0xa4 R1=0x04 PC=0xa4 
-	\item Ausführen von 0xa4: R0=0x04 R1=0x02 PC=0xa8
+	\item Ausführen von 0xa4: R0=0x02 R1=0x04 PC=0xa8
 	\item Ausführen von 0xa8: R0=0x02 R1=0x02 PC=0xac
 	\item Ausführen von 0xac: R0=0x02 R1=0x02 PC=0xb0 $\Rightarrow$ Ausgabe von R1
 	\item Ausführen von 0xb0: R0=0x02 R1=0x02 PC=0xb4
@@ -69,7 +69,7 @@ Es muss die Flag gecleared werden, welche den entsprechnden Interrupt signalisie
 Nach der ISR sollte noch RTI (Return from Interrupt) aufgerufen werden um den vorherigen Zustand wiederherzustellen.
 
 \paragraph{(d)}
-Bei dem in c) auftretenden Interrupt handelt es sich um einen external Interrupt oder einen user Interrupt. 
+Bei dem in c) auftretenden Interrupt handelt es sich um einen external Interrupt oder einen user Interrupt. Ein external Interrupt kann jeder Zeit auftreten bspw. durch Peripherie-Geräte. Hier ist allerdings ein user Interrupt wahrscheinlicher, da zuvor ein Print-Syscall gemacht wurde und dieser nun behandelt wird. 
 
 \paragraph{(e)}
 Die dritte Art von Interrupt welche in der Vorlesung behandelt wurde ist der interne Interrupt. Dieser tritt in Fehlersituationen auf. Beispiele hierfür wären die Division durch 0 oder der Versuch einen Kernelbefehl im Usermode auszuführen.
