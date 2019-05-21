@@ -18,7 +18,7 @@
 char *read_from_console();
 char **extract_parameterlist(char *input);
 //Todo extract parameter list
-
+//Todo something isnt reset properly and stops working after being succesfull the first time
 int main(int argc, char **argv){
 
 	char *in_buf;

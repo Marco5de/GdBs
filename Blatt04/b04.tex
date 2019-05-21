@@ -1,0 +1,171 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\usepackage{tikz-timing}[2009/05/15]
+\pagestyle{empty}
+\usepackage{subcaption}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 04 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Mai 2019}
+
+
+\begin{document}
+\maketitle
+
+\section{Prozesse und Prozessverwaltung}
+\paragraph{(a)}
+\begin{enumerate}
+    \item Neu (erzeugt)
+    \item Bereit
+    \item Laufend
+    \item blockiert
+    \item terminiert
+\end{enumerate}
+
+\paragraph{(b)}
+\begin{itemize}
+    \item Neu $\rightarrow$ Bereit: neu erstellter Prozess kann zugelassen werden
+    \item Bereit $\rightarrow$ Laufend: Prozess der bereit ist, kann CPU Zeit bekommen
+    \item Laufend $\rightarrow$ Bereit: Laufender Prozess kann Unterbrochen werden und wieder in bereit eingereiht werden
+    \item Laufend $\rightarrow$ Blockiert: laufender Prozess blockiert implizit oder explizit
+    \item Blockiert $\rightarrow$ Bereit: nach Freigabe einer Ressource kann zuvor blockierter Prozess wieder laufen
+\end{itemize}
+
+\section{Shortest Job First Scheduling}
+
+\paragraph{(a)}
+Shortest Job First optimiert die mittlere Wartezeit. Es werden so viele Prozesse wie möglich in den blockiert/terminiert Status gesetzt, da zuerst kurze Prozesse abgearbeitet werden.
+
+\paragraph{(b)}
+Wenn kontinuierlich neue kurze Prozesse hinzukommen, bekommen rechenintensive längere Prozesse keine CPU-Zeit mehr, da immer die kürzeren Prozesse gewählt werden.
+
+\paragraph{(c)}
+Beim präemptiven Shortest Job First kann der ausgeführt Task unterbrochen werden (Context Switch). \\
+Beim nicht-präemptiven Shortest Job First ist dies nicht möglich, so dass der ausgewählte Task so lange läuft, bis dieser blockiert oder terminiert.
+
+
+\begin{figure}[tbh]
+    %\centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 2H 2L 2H 2L 4H 2L 6L 8H\\ 
+          Bereit  & 2L 2H 2L 2H 20L \\
+          Blockiert & 12L 8H 8L \\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{PSJF Prozess A}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 2L 2H 2L 2H 20L\\ 
+          Bereit  & 28L\\
+          Blockiert &  4L 2H 22L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{PSJF Prozess B}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 12L 8H 8L\\
+          Bereit  & 2L 10H 16L\\ 
+          Blockiert &  28L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{PSJF Prozess C}
+    \end{subfigure}
+    \caption{PSJF}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[tbh]
+    %\centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 8H 12L 8H\\ 
+          Bereit  & 16L 4H 8L\\
+          Blockiert & 8L 8H 10L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{SJF Prozess A}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 8L 2H 8L 2H 8L\\ 
+          Bereit  & 2L 6H 4L 6H 10L\\
+          Blockiert & 10L 2H 16L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{SJF Prozess B}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 10L 8H 10L\\
+          Bereit  & 2L 8H 18L\\ 
+          Blockiert &  28L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{SJF Prozess C}
+    \end{subfigure}
+    \caption{SJF}
+    \label{fig:my_label}
+\end{figure}
+    
+
+\end{document}
+
