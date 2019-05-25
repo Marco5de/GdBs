@@ -1,0 +1,177 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\usepackage{tikz-timing}[2009/05/15]
+\pagestyle{empty}
+\usepackage{subcaption}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 05 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Mai 2019}
+
+
+\begin{document}
+\maketitle
+
+\section{Round-Robin und Highest Priority Scheduling}
+
+\begin{figure}[tbh]
+    %\centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 4H 6L 4H 8L 8H\\ 
+          Bereit  &  4L 4H 20L\\
+          Blockiert & 14L 8H 6L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{Effizientes RR Proc. A}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 4L 2H 8L 2H 12L\\ 
+          Bereit  & 2L 2H 4L 6H 14L\\
+          Blockiert &  6L 2H 20L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{Effizientes RR Proc. B}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 6L 4H 6L 4H 8L\\
+          Bereit  & 10L 6H 12L\\ 
+          Blockiert &  28L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{Effizientes RR Proc. C}
+    \end{subfigure}
+    \caption{Effizientes RR}
+    \label{fig:my_label}
+\end{figure}
+
+%#########################################################################%
+%----------------------HPF-----------------------------------------------%
+%########################################################################%
+\begin{figure}[tbh]
+    %\centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 8H 8L 8H 4L\\ 
+          Bereit  &  28L\\
+          Blockiert & 8L 8H 12L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{HPF Proc. A}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 8L 2H 2L 2H 14L\\ 
+          Bereit  & 2L 6H 20L\\
+          Blockiert & 10L 2H 16L\\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{HPF Proc. B}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikztimingtable}
+          Laufend   & 10L 2H 2L 2H 8L 4H\\
+          Bereit  & 6L 4H 2L 2H 2L 8H 4L\\ 
+          Blockiert & 28L \\
+          \begin{extracode}
+                        \vertlines[help lines]{0, 4, ..., \twidth}
+                        \foreach \x in {0, ...,7}
+                            \node at (\x*4,2.5) {\x s};
+                    \end{extracode}
+        \end{tikztimingtable}
+        \caption{HPF Proc. C}
+    \end{subfigure}
+    \caption{HPF}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\section{Threads und Prozesse}
+\paragraph{(a)}
+Mehrere Threads innerhalb eines Prozesses teilen sich
+\begin{itemize}
+    \item Text und Data Section werden geteilt, d.h. alle Threads eines Prozesses nutzen den gleichen Code im Speicher und es ist theoretisch Zugriff auf die gleichen Daten möglich
+    \item Threads eines Prozesses nutzen die gleiche Schutzumgebung. Threads eines Prozesses arbeiten alle im gleichen virtuellen Address Space
+    \item nutzen IO-Ressourcen gemeinsam (bpsw. Dateien, Netzwerkverbindungen, etc)
+\end{itemize}
+
+\paragraph{(b)}
+Ressourcen die jeder Thread exklusive hat sind
+
+\begin{itemize}
+    \item eigene virtuelle CPU, d.h. eigenen Registersatz
+    \item eigenen Stack
+    \item \todo[inline]{3. antwort einfügen}
+\end{itemize}
+
+\paragraph{(c)}
+Ein Nachteil von User-level Threads ist, dass der Kernel nicht weiß wie viele Threads in einem Prozess vorhanden sind. Der Prozess als Ganzes bekommt eine bestimmte Zeit vom Scheduler, unabhängig davon unter wie vielen Threads diese Zeit geteilt werden muss.\\
+Ein weiterer Nachteil ist, dass User-level Threads non-blocking System calls benötigen. Ansonsten wird bei einem blocking Syscall durch einen Thread der gesamte Prozess geblockt, obwohl es noch Threads geben könnte welche \textit{ready} sind.\\
+Der Nachteil, dass non-blocking System calls benötigt werden, ist der Hauptgrund warum heutzutage vor allem eine Kombination aus Kernel- und User-level Threads verwendet werden.
+
+
+
+
+
+\end{document}
