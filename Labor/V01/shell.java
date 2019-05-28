@@ -13,20 +13,21 @@ class shell {
 	
 	 while(true){
 		String[][][] input = splitInput();
-		int pipe_count = 0;	
-		int[] proc_fd = {STDIN_FILENO,STDOUT_FILENO};
 
-		pipe_count = input.length-1;
-		int new_stdin = 0;
+		int pipe_count = input.length-1;
+		int new_stdin = STDIN_FILENO;
+		int new_stdout = STDOUT_FILENO;
+		
 		for(String[][] pipes : input){
 
-			int[] pip_fd = new int[2];
+			int[] pip_fd = {STDIN_FILENO, STDOUT_FILENO};
 			if(pipe_count > 0){
 				if(pipe(pip_fd)<0)
 					System.err.println("Pipe failed");
 				pipe_count--;
 			}
 			System.err.println("Created Pipe: " + pip_fd[0] + " " + pip_fd[1] + " New stdin " + new_stdin);
+			
 			for(String[] comm : pipes){	
 				/*
 				for(String s : comm)
@@ -35,13 +36,12 @@ class shell {
 				return_valid_path(comm,path);	
 				String[][] files = parse_redirect(comm);
 					
-				if(create_proc(files[0],files[1][0],files[2][0],pip_fd,new_stdin) != 0){
+				if(create_proc(files[0],files[1][0],files[2][0],pip_fd,new_stdin,new_stdout) != 0){
 					break;
 				}
 			}
-			new_stdin = pip_fd[1];
-			pip_fd[0] = 0;
-			pip_fd[1] = 0;
+			new_stdin = pip_fd[0];
+			new_stdout = pip_fd[1];
 		}	
 	}
 
@@ -141,7 +141,7 @@ class shell {
 		return split_input;
 	}
 
-	static int create_proc(String[] split_input,String fin, String fout,int[] pip_fd,int new_stdin){
+	static int create_proc(String[] split_input,String fin, String fout,int[] pip_fd,int new_stdin, int new_stdout){
 		if(split_input[0].equals("exit")){
 			System.err.println("\n");	
 			exit(0);
@@ -156,39 +156,43 @@ class shell {
 			exit(1);
 		}
 
-		//unterscheidung zw. child und parent
+		//Unterscheidung: Child, Parent
 		if(pid_child == 0){
-			System.err.println("New stdin: " + new_stdin);
-			if(new_stdin!=0){
-				System.err.println("Setting new stdin in child");
-				//dup2(STDIN_FILENO,pip_fd[0]);
-				close(pip_fd[1]);
-				dup2(pip_fd[0],STDIN_FILENO);
+		//Child
+			
+			//read from pipe
+			if(new_stdin!=STDIN_FILENO && new_stdout!=STDOUT_FILENO){
+				close(new_stdout);
+				dup2(new_stdin, STDIN_FILENO);
+				close(new_stdin);
+				System.err.println("Set Pipe for Read");
 
 			}
-			//code for child
+			
+			//Code fuer Umlekung mit <, >
 			if(fout != null || fin != null){
 				if(redirect_output(fout,fin)!=0){
 					System.err.println("Error redirecting output");
 					return 1;
 				}
 			}
-			//code for child goes in here
-			if(handle_pipes(pip_fd)<0){
-				System.err.println("Error setting pipe out");
-				return -1;
+			
+			//write into pipe
+			if(pip_fd[0] != STDIN_FILENO && pip_fd[1] != STDOUT_FILENO){
+				close(pip_fd[0]);
+				dup2(pip_fd[1], STDOUT_FILENO);
+				close(pip_fd[1]);
+				System.err.println("Set Pipe for Write");
 			}
+
+			//Execv
 			if(execv(split_input[0],split_input)<0){
 				System.err.println("Error: execv");
 				exit(1);
 			}
 		}
 		else{
-			//code for parent
-			if(pip_fd[0] != 0){
-				close(pip_fd[0]);
-				close(pip_fd[1]);
-			}
+		//Parent			
 			if(waitpid(pid_child,status,0)<0){
 				System.err.println("Error: waiting for child");
 				exit(1);
@@ -198,21 +202,8 @@ class shell {
 				return 1;
 			}
 		}	
-	
 		return 0;
 	}
 
-	static int handle_pipes(int[] fd){
-		if(fd[0]==0 && fd[1]==0){
-			System.err.println("Leaving handle pipes");
-			return 0;
-		}
-		//fd[0] ist für das Lesen verantwortlich. Wird im folgenden nicht verwendet und daher geschlossen
-		close(fd[0]);
-		//es muss jetzt noch das Out des jetzigen Prozesses neu gesetzt werden
-		dup2(fd[1],STDOUT_FILENO);
-		System.err.println("Succesfully set new output fd");
-		return 0;
-		
-	}
 }
+	
