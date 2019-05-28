@@ -59,10 +59,13 @@ class head{
 				}
 			}
 			if(nbytes == 0){
+				//print lines
 				read_and_println(fd,nlines);
 			}else{
+				//print bytes
 				read_printbytes(fd,nbytes);
 			}
+			System.out.println();
 		}
 		exit(0);
 		
