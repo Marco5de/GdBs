@@ -192,7 +192,12 @@ class shell {
 			}
 		}
 		else{
-		//Parent			
+		//Parent
+			if(new_stdin!=STDIN_FILENO && new_stdout!=STDOUT_FILENO) {
+				close(new_stdin);
+				close(new_stdout);
+			}
+		
 			if(waitpid(pid_child,status,0)<0){
 				System.err.println("Error: waiting for child");
 				exit(1);
