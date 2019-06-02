@@ -1,0 +1,65 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 06 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Juni 2019}
+
+\begin{document}
+
+\maketitle
+\section{Nebenläufigkeit und Parallelität}
+\paragraph{(a)}
+Nein. Zu einem festen Zeitpunkt $t_0$ kann immer nur ein Arbeitsblatt in Bearbeitung sein. Bzw. die Aufmerksamkeit ist immer auf genau ein Arbeitsblatt gerichtet.
+
+\paragraph{(b)}
+Ja. Mehrere Arbeitsblätter können nebenläufig bearbeitet werden, bspw. in dem jedes Arbeitsblatt immer für eine kurze Zeit bearbeitet wird.
+
+\paragraph{(c)}
+Parallelität ist eine Teilmenge der Nebenläufigkeit. Jeder parallele Prozess ist auch nebenläufig, aber nicht jeder nebenläufige Prozess ist auch parallel.
+
+\section{Koordination}
+\paragraph{(a)}
+\begin{itemize}
+    \item 7 Punkte. Zuerst führt Julian die Schritte 1-3 aus, danach Katharina oder umgekehrt. Die Punkte werden in diesem Fall korrekt eingetragen.
+    \item 4 Punkte \begin{itemize}
+        \item Katharina lädt die Punkte/Seite und trägt ihre Punkte ein
+        \item Julian lädt die Punktzahl
+        \item Katharina sendet das Formular ab
+        \item Julian trägt die Punkte ein und sendet das Formular ab
+    \end{itemize}
+    Da Julian noch die alte Punktzahl geladen hat, werden die von Katharina eingetragenen Punkte überschrieben, so dass Laura am Ende vier Punkte erhält
+    \item 3 Punkte: werden die oben beschrieben Schritte in anderer Reihenfolge ausgeführt, d.h. Julian trägt die Punkte zuerst ein und Katharina überschreibt die eingetragene Punktzahl, dann erhält Laura drei Punkte
+\end{itemize}
+
+\paragraph{(b)}
+Eine Möglichkeit sich über e-Mail zu koordinieren wäre, dass Julian Katharina eine Mail schickt sobald er die Punktzahl lädt. Er schreibt eine weitere Mail sobald er die Punkte erfolgreich eingetragen hat. In dieser Zeit darf Katharina nicht auf die Seite zugreifen, bzw. die angezeigten Infos verwenden.
+
+\paragraph{(c)}
+Der beschriebene Mechanismus funktioniert auch für mehrere Korrekteure. In der verallgemeinerten Form existiert ein Token, welches immer genau einer der Korrekteure haben kann. Wer im Besitz dieses Token ist, hat die Erlaubnis seine Punkte einzutragen.\\
+Die benötigte Bedingung ist, dass der Zugriff auf den Token atomar abläuft.
+
+
+
+\end{document}
