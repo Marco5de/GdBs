@@ -1,0 +1,11 @@
+#!/usr/bin/perl -w
+use strict;
+
+for my $line (`ipcs -s`) {
+  if ($line =~ /^0x00000000\s+(\d+)\s+/) {
+    my $semid=$1;
+    print "ipcrm -s $semid:\n";
+    #print
+          `ipcrm -s $semid 2>&1`;
+  }
+}
