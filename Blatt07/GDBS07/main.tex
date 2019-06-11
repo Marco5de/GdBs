@@ -32,7 +32,7 @@
 
 \section{Deadlocks}
 \paragraph{(a)}
-Ein Szenario in dem keines der Fahrzeuge die Kreuzung überqueren kann, wäre wenn alle vier Fahrzeuge auf die erste Spur vorfahren. Dann wird jedes der Fahrzeuge durch ein anderes blockiert, so dass alle Fahrzeuge warten.\\
+Ein Szenario in dem keines der Fahrzeuge die Kreuzung überqueren kann, ergibt sich wenn alle vier Fahrzeuge auf die erste Spur vorfahren. Dann wird jedes der Fahrzeuge durch ein anderes blockiert, so dass alle Fahrzeuge warten.\\
 
 \paragraph{(b)}
 \todo[inline]{wie ist dieser Fall zu verstehen}
@@ -42,11 +42,11 @@ Ein Szenario in dem keines der Fahrzeuge die Kreuzung überqueren kann, wäre we
     \item Fahrzeuge entsprechen Aktivitätsträger
     \item Kreuzung entsprechen geteilten Ressourcen
     \item Warten entspricht blockiert sein
-    \item Nie überqueren entspricht dem startvation Fall, in dem ein Akitvitätsträger dauerhaft blockiert ist und nie mehr zum laufen kommt
+    \item Nie überqueren entspricht dem starvation Fall, in dem ein Akitvitätsträger dauerhaft blockiert ist und nie mehr zum laufen kommt
 \end{itemize}
 
 \paragraph{(d)}
-Wenn ein Auto fahren möchte, fährt es bis zur ersten Spur nach vorne und versucht ob es die Kreuzung überqueren kann. Ist dies möglich, so überquert das Auto die Kreuzung. Kann er nicht fahren, weil die zweite Spur blockiert ist, fährt er wieder zurück, bis er wieder in seiner Haltebucht steht. Dort wartet er dann eine zufällig lang gewählte Zeit bevor er es erneut versucht.
+Wenn ein Auto fahren möchte, fährt es bis zur ersten Spur nach vorne und versucht ob es die Kreuzung überqueren kann. Ist dies möglich, so überquert das Auto die Kreuzung. Kann es nicht fahren, weil die zweite Spur blockiert ist, fährt er wieder zurück, bis er wieder in seiner Haltebucht steht. Dort wartet er dann eine zufällig lang gewählte Zeit bevor er es erneut versucht.
 
 
 \section{Semaphore und aktives Warten (Spinlock)}
@@ -60,6 +60,6 @@ Spinlocks eignen sich nicht auf Einprozessorgeräten, da diese die CPU blockiere
 
 
 \paragraph{(c)}
-Die Operationen P und V selbst müssen nicht atomar sein, allerdings muss das erhöhen oder erniedrigen des Semaphores atomar ablaufen. Dafür benötigt man eine Instruktion welche innerhalb einer Instruktion eine Speicherzelle lesen und schreiben kann.
+Die Operationen P und V selbst müssen nicht atomar sein, allerdings muss das erhöhen oder erniedrigen des Semaphors atomar ablaufen. Dafür benötigt man eine Instruktion welche innerhalb eines Cycles eine Speicherzelle lesen und schreiben kann.
 
 \end{document}
