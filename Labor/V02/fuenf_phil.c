@@ -17,6 +17,11 @@
 volatile int staebchen[5]={1,1,1,1,1};
 volatile int have_one[5]={0,0,0,0,0}; // nur zur deadlock erkennung
 
+volatile semaphore lock;
+volatile semaphore statelock;
+volatile semaphore rightfork;
+volatile semaphore leftfork;
+
 //-----------------------------------------------------------------------------
 // bevor der test beginnt wird test_setup() einmal aufgerufen
 //-----------------------------------------------------------------------------
@@ -25,6 +30,10 @@ void test_setup(void) {
   printf("Test Setup\n");
   readers=0;
   writers=5;
+  lock = sem_init(1);
+  statelock = sem_init(1);
+  rightfork = sem_init(4);
+  leftfork = sem_init(4);
   srandom(time(NULL));
 }
 
@@ -47,12 +56,15 @@ void reader(long my_id) {
 
 
 int staebchen_nehmen(int my_id, int pos) {
+  sem_p(lock);
   int n=staebchen[pos];
   if (n==1) {
     printf("%i nimmt %i\n", my_id, pos);
     staebchen[pos]--; // ergibt 0, gibt aber chance zur fehlererkennung
+	sem_v(lock);
     return 1;
   } else if (n==0) {
+	sem_v(lock);
     return 0;
   } else {
     printf("Fehler: staebchen[%i]=%i\n", pos, n);
@@ -66,7 +78,9 @@ void staebchen_weglegen(int my_id, int pos) {
     printf("Fehler: staebchen[%i]=%i statt 0\n", pos, staebchen[pos]);
     exit(1);
   }
+  sem_p(lock);
   staebchen[pos]++; // ergibt 1, gibt aber chance zur fehlererkennung
+  sem_v(lock);
 }
 
 
@@ -79,8 +93,16 @@ void writer(long long_my_id) {
   int rechts=0;
   while (i>0) {
     // probiere zufaellig staebchen zu nehmen, die noch nicht da sind
-    if (!links && random()%10==7) links=staebchen_nehmen(my_id, my_id);
-    if (!rechts && random()%10==7) rechts=staebchen_nehmen(my_id, nxt);
+    if (!links && random()%10==7) {
+		sem_p(leftfork);
+		links=staebchen_nehmen(my_id, my_id);
+		if(!links) sem_v(leftfork);
+	}
+    if (!rechts && random()%10==7) {
+		sem_p(rightfork);
+		rechts=staebchen_nehmen(my_id, nxt);
+		if(!rechts) sem_v(rightfork);
+	}
 
     // wenn beide da sind: essen!
     if (links && rechts) {
@@ -88,17 +110,27 @@ void writer(long long_my_id) {
       usleep(random()%200);
       i--;
       // staebchen wieder hinlegen
-      staebchen_weglegen(my_id, my_id); links=0;
-      staebchen_weglegen(my_id, nxt);   rechts=0;
+      staebchen_weglegen(my_id, my_id);
+	  sem_v(leftfork);
+	  links = 0;
+
+      staebchen_weglegen(my_id, nxt);
+	  sem_v(rightfork);
+	  rechts=0;
     }
+
+	if(i==0) printf("finished: %i\n", my_id);
 
     // fuer die deadlock-erkennung melden, wenn ein staebchen von mir
     // belegt ist (beide koennen hier nicht belegt sein, dann wurde gegessen)
-    have_one[my_id] = links || rechts;
+    /*
+	sem_p(statelock);
+	have_one[my_id] = links || rechts;
+	sem_v(statelock);
     if (have_one[0]+have_one[1]+have_one[2]+have_one[3]+have_one[4]==5) {
       //printf("Deadlock!\n");
       //exit(1);
-      printf("%i gibt freiwillig ab\n", my_id);
+	  printf("%i gibt freiwillig ab\n", my_id);
       if (links) {
         staebchen_weglegen(my_id, my_id); links=0;
       }
@@ -110,5 +142,7 @@ void writer(long long_my_id) {
 
     // denken
     usleep(random()%200);
+  }
+  */
   }
 }
