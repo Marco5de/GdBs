@@ -1,0 +1,119 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 08 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Juni 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Dateisysteme: FAT}
+\paragraph{(a)}
+Die erste Zeile enthält die jeweilige Clusternummer, während die zweite Zeile Informationen über das jeweilige Cluster enthält.\\
+Bspw. $F7_{16}$ für defekt oder $00_{16}$ für frei.
+
+\paragraph{(b)}
+\begin{itemize}
+    \item Datei B: $02_{16}$ - $04_{16}$ - $03_{16}$
+    \item Datei C: $05_{16}$ - $06_{16}$ - $09_{16}$
+    \item Datei D: $07_{16}$
+    \item Datei E: $0B_{16}$ - $0F_{16}$ 
+    \item Datei F: $0C_{16}$ - $0D_{16}$ - $0E_{16}$ - $10_{16}$ - $11_{16}$
+\end{itemize}
+
+\paragraph{(c)}
+\begin{itemize}
+    \item Datei 1 = Datei D. Belegt ein Cluster\\
+        min. 1Byte - max. 8KByte
+    \item Datei 2 = Datei B oder C. Belegt drei Cluster\\
+        min. 16KByte + 1Byte - max. 24KByte
+    \item Datei 3 = Datei B oder C. Belegt drei Cluster\\
+         min. 16KByte + 1Byte - max. 24KByte
+    \item Datei 4 = Datei E. Belegt zwei Cluster\\
+        min. 8KByte + 1 Byte - max. 16KByte
+    \item Datei 5 = Datei F. Belegt fünf Cluster\\
+        min. 40KByte + 1Byte - max. 48KByte\\
+        Diese Datei sollte eigentlich 6 Cluster belegen, es wäre möglich dass zu dieser Datei einer der defekten Blöcke gehört.
+\end{itemize}
+
+
+\section{Dateisysteme: NTFS}
+\paragraph{Datei 1: hallo.txt 100 Byte lang}
+\begin{itemize}
+    \item Standard Informationen
+        \begin{itemize}
+            \item Länge: 100Bytes
+            \item MS-DOS Atrribute
+            \item Zeitstempel
+            \item Anzahl der Hard-Links
+            \item Sequenznummer der gültigen File Reference
+        \end{itemize}
+    \item Dateiname: \textit{hallo.txt}
+    \item Zugriffsrechte
+    \item Daten
+\end{itemize}
+
+\paragraph{rsa.key 8 KByte lang}
+\begin{itemize}
+    \item Standard Informationen
+        \begin{itemize}
+            \item Länge: 8KBytes
+            \item MS-DOS Atrribute
+            \item Zeitstempel
+            \item Anzahl der Hard-Links
+            \item Sequenznummer der gültigen File Reference
+        \end{itemize}
+    \item Dateiname: \textit{rsa.key}
+    \item Zugriffsrechte
+    \item Daten
+\end{itemize}
+
+\paragraph{cat.jpg 44 Kbyte lang}
+\begin{itemize}
+    \item Standard Informationen
+        \begin{itemize}
+            \item Länge: 44KBytes
+            \item MS-DOS Atrribute
+            \item Zeitstempel
+            \item Anzahl der Hard-Links
+            \item Sequenznummer der gültigen File Reference
+        \end{itemize}
+    \item Dateiname: \textit{cat.jpg}
+    \item Zugriffsrechte
+    \item Verweis auf \\
+        \begin{itemize}
+            \item VCN 0 - LCN 17 - Anzahl Cluster 1
+            \item VCN 1 - LCN 19 - Anzahl Cluster 1
+            \item VCN 2 - LCN 22 - Anzahl Cluster 9
+        \end{itemize}
+        $\rightarrow$ es werden insgesamt 11 Cluster benötigt
+    \end{itemize}
+
+
+
+
+
+\end{document}
