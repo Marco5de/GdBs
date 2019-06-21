@@ -18,7 +18,6 @@ volatile int staebchen[5]={1,1,1,1,1};
 volatile int have_one[5]={0,0,0,0,0}; // nur zur deadlock erkennung
 
 volatile semaphore lock;
-volatile semaphore statelock;
 volatile semaphore rightfork;
 volatile semaphore leftfork;
 
@@ -31,7 +30,6 @@ void test_setup(void) {
   readers=0;
   writers=5;
   lock = sem_init(1);
-  statelock = sem_init(1);
   rightfork = sem_init(4);
   leftfork = sem_init(4);
   srandom(time(NULL));
