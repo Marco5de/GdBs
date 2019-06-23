@@ -1,0 +1,111 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 09 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Juni 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Dateisysteme und Speicher: Journaling und Log-Structured File Systems}
+
+\paragraph{(a)}
+
+\begin{itemize}
+    \item Änderungen an Block 2 in Log eintragen
+    \item Änderungen an Block 2 durchführen
+    \item Änderungen an Block 3 in Log eintragen
+    \item Änderungen an Block 3 durchführen
+\end{itemize}
+Nach Abschluss der Änderungen sind sowohl die beiden Änderungen in den Blöcken zwei und drei Sichtbar, als auch der Eintrag in das Journal.
+
+\paragraph{(b)}
+\begin{itemize}
+    \item Block 2 wird kopiert und auf der Kopie werden die Änderungen durchgeführt
+    \item erstellen einer neuen Inode für den kopierten/veränderten Block
+    \item anpassen der Verweise in der obersten Inode
+    \item Block 3 wird kopiert und auf der Kopie werden die Änderungen durchgeführt
+    \item erstellen einer neuen Inode für den kopierten/veränderten Block
+    \item anpassen der Verweise in der obersten Inode
+\end{itemize}
+Nach Abschluss der Änderungen sind nur die Änderungen in der Datei sichtbar. Es kann nicht festgestellt werden was geändert wurde, da kein Journal existiert.
+
+\paragraph{(c)}
+\paragraph{Journaling-Filesystem}
+Es ist möglich, dass die Änderungen welche an Block 3 vorgenommen werden sollten noch durchgeführt werden können, falls diese bereits im Log dokumentiert sind und die nötigen Ressource vorhanden sind. Ist dies nicht der Fall wird eine konsistente Version des Dateisystems wiederhergestellt.
+
+\paragraph{Log-Structured Filesystem}
+Das System nimmt den Zustand an, der vor der Änderung von Block 3 vorhanden war. Die Änderung geht verloren.
+
+\section{Dateisysteme und Speicher: Speicherlokalität}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c c c c c c c c c c c c c c c c}
+         \toprule
+         Adresse & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & A & B & C & D & E & F  \\
+         \midrule
+         Wert & 10 & 4 & 34 & 8 & 11 & 6 & 12 & A & 21 & FF & 13 & C & 14 & FF & - & -\\
+         \bottomrule
+    \end{tabular}
+    \caption{Eine Liste der Länge 5, mit den Elementen 10 bis 14}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c c c c c c c c c c c c c c c c}
+         \toprule
+         Adresse & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & A & B & C & D & E & F  \\
+         \midrule
+         Wert & - & - & 34 & 8 & - & - & - & - & 21 & FF & 40 & 41 & 42 & 43 & 44 & 45\\
+         \bottomrule
+    \end{tabular}
+    \caption{Ein Array der Länge 6, mit den Elementen 40 bis 45}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c c c c c c c c c c c c c c c c}
+         \toprule
+         Adresse & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & A & B & C & D & E & F  \\
+         \midrule
+         Wert & 4 & 50  & 34 & 8 & A  & 51 &  52 &  53 & 21 & FF & FF & 54  & 55 & 56 & - & -\\
+         \bottomrule
+    \end{tabular}
+    \caption{Eine verlinkte-Arrayliste der Länge 7, mit den Elementen 50 bis 56}
+    \label{tab:my_label}
+\end{table}
+
+\paragraph{(b)}
+\begin{itemize}
+    \item \textbf{Liste:} 5 Zugriffe
+    \item \textbf{Array:} 2 Zugriffe
+    \item \textbf{Arraylist:} 5 Zugriffe
+\end{itemize}
+
+\end{document}
