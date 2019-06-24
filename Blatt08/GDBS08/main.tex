@@ -66,7 +66,7 @@ Bspw. $F7_{16}$ für defekt oder $00_{16}$ für frei.
     \item Standard Informationen
         \begin{itemize}
             \item Länge: 100Bytes
-            \item MS-DOS Atrribute
+            \item MS-DOS Attribute
             \item Zeitstempel
             \item Anzahl der Hard-Links
             \item Sequenznummer der gültigen File Reference
@@ -81,14 +81,19 @@ Bspw. $F7_{16}$ für defekt oder $00_{16}$ für frei.
     \item Standard Informationen
         \begin{itemize}
             \item Länge: 8KBytes
-            \item MS-DOS Atrribute
+            \item MS-DOS Attribute
             \item Zeitstempel
             \item Anzahl der Hard-Links
             \item Sequenznummer der gültigen File Reference
         \end{itemize}
     \item Dateiname: \textit{rsa.key}
     \item Zugriffsrechte
-    \item Daten
+    \item Verweis auf 
+        \begin{itemize}
+            \item VCN 0 - LCN 17 - Anzahl Cluster 1
+            \item VCN 1 - LCN 19 - Anzahl Cluster 1
+        \end{itemize}
+        $\rightarrow$ es werden insgesamt 2 Cluster benötigt
 \end{itemize}
 
 \paragraph{cat.jpg 44 Kbyte lang}
@@ -96,7 +101,7 @@ Bspw. $F7_{16}$ für defekt oder $00_{16}$ für frei.
     \item Standard Informationen
         \begin{itemize}
             \item Länge: 44KBytes
-            \item MS-DOS Atrribute
+            \item MS-DOS Attribute
             \item Zeitstempel
             \item Anzahl der Hard-Links
             \item Sequenznummer der gültigen File Reference
