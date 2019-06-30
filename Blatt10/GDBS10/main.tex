@@ -1,0 +1,206 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 08 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Juni 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Freispeichervergabe}
+\paragraph{(a)}
+Ein Kibibyte hat 1024 Byte.
+\paragraph{(b)}
+\begin{itemize}
+    \item A: 2 Blöcke
+    \item B: 2 Blöcke
+    \item C: 1 Block
+    \item D: 3 Blöcke
+    \item E: 1 Block
+\end{itemize}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \toprule
+          \cellcolor{gray} &
+          \cellcolor{gray} &
+          A&
+          A&
+          C&
+          \cellcolor{gray}&
+          \cellcolor{gray}&
+          B&
+          B&
+          \cellcolor{gray}&
+          D&
+          D&
+          D&
+          \cellcolor{gray}&
+          E&
+          &
+          &
+          \cellcolor{gray}&
+          &  
+          \cellcolor{gray}\\
+          \bottomrule
+    \end{tabular}
+    \caption{First Fit}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \toprule
+          \cellcolor{gray} &
+          \cellcolor{gray} &
+          A&
+          A&
+          &
+          \cellcolor{gray}&
+          \cellcolor{gray}&
+          B&
+          B&
+          \cellcolor{gray}&
+          C&
+          &
+          &
+          \cellcolor{gray}&
+          D&
+          D&
+          D&
+          \cellcolor{gray}&
+          E&  
+          \cellcolor{gray}\\
+          \bottomrule
+    \end{tabular}
+    \caption{Next Fit}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \toprule
+          \cellcolor{gray} &
+          \cellcolor{gray} &
+          B&
+          B&
+          C&
+          \cellcolor{gray}&
+          \cellcolor{gray}&
+          A&
+          A&
+          \cellcolor{gray}&
+          D&
+          D&
+          D&
+          \cellcolor{gray}&
+          &
+          &
+          &
+          \cellcolor{gray}&
+          E&  
+          \cellcolor{gray}\\
+          \bottomrule
+    \end{tabular}
+    \caption{Best Fit}
+    \label{tab:my_label}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \toprule
+          \cellcolor{gray} &
+          \cellcolor{gray} &
+          A&
+          A&
+          &
+          \cellcolor{gray}&
+          \cellcolor{gray}&
+          E&
+          &
+          \cellcolor{gray}&
+          B&
+          B&
+          &
+          \cellcolor{gray}&
+          C&
+          &
+          &
+          \cellcolor{gray}&
+          &  
+          \cellcolor{gray}\\
+          \bottomrule
+    \end{tabular}
+    \caption{Worst Fit}
+    \label{tab:my_label}
+\end{table}
+Für den Speicherblock D konnte beim Worst Fit keine Position gefunden werden.
+
+\newpage
+\section{Getrennte Listen}
+\paragraph{(a)}
+\begin{itemize}
+    \item Freispeicherliste: 4Byte - 8Byte - 4Byte - 4Byte - 8Byte
+    \item Getrennte Freispeicherliste: 
+    \begin{itemize}
+        \item 4Byte - 4Byte - 4Byte
+        \item 8Byte - 8Byte
+    \end{itemize}
+\end{itemize}
+
+\paragraph{(b)}
+Es muss nicht nach einer passend großen Lücke gesucht werden, da alle Elemente innerhalb einer Liste gleich groß sind. Es genügt also die Information wo der nächste freie Speicherplatz ist. An diesen passt das Element dann garantiert.
+
+\paragraph{(c)}
+Der Overhead ist größer, da für jede Größe eine Liste verwaltet werden muss. 
+
+\section{Segmentierung}
+\paragraph{(a)}
+Index: 00, Virtuelle Adresse: 0000 4a10\\
+Speicherschutz: Länge ist größer virtuelle Addresse\\
+Reale Adresse: ff00 f000 + 000 4a10 = ff01 3a10\\
+
+\paragraph{(b)}
+Index: 01, Virtuelle Adresse: 0000 2345
+Speicherschutz: Länge ist kleiner als virtuelle Adresse\\
+Es kommt zu einem Segmentation Fault.
+
+
+
+
+
+
+
+
+
+
+\end{document}
