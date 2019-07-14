@@ -1,0 +1,122 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\usepackage{multirow}
+\usepackage{booktabs}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+\title{Grundlagen der Betriebssysteme\\ Blatt 11 \\ Gruppe 055}
+\author{Marco Deuscher & Ibrahem Hasan}
+\date{Juli 2019}
+
+\begin{document}
+
+\maketitle
+\section{Seitenadressierung}
+
+\begin{enumerate}
+    \item Addition des Segmenttabellenbasisregisters und der logischen Segmentnummer der logischen Adresse ergibt Adresse des Segmenteintrags. (Software)
+    \item Lesen des zugehörigen Segmenteintrags, der die Startadresse der zugehörigen Seiten-Kachel-Tabelle (SKT) enthält.(Software)
+    \item Berechnen der Adresse des SKT-Eintrags: Addition der Startaddresse der SKT mit der SKT-Nummer welche Teil der virtuellen Adresse ist (Software)
+    \item Vergleich der Seitennummer mit Segmentlänge. Falls die Seitennummer außerhalb des Segments: es wird eine Unterbrechung ausgelöst (Software)
+    \item Es wird der referenzierte Eintrag aus der SKT geladen (Hardware)
+    \item Ermitteln des Präsenzbits. Dies ist in diesem Fall: 0, da Seite nicht geladen (Hardware)
+    \item Es wird eine Unterbrechung ausgelöst, da ein Pagefault aufgetreten ist (Hardware)
+    \item Blockieren des Prozesses, einlagern der benötigten Seite in die freie Kachel (Software).
+    \item Anpassen des SKT Eintrags (setzen des Referenzbits und anpassen der Adresse) (Hardware) 
+    \item Einlagern der Seite beendet, Prozess wird wieder aufgeweckt. Der lesende Speicherzugriff der Anwendung wird wiederholt (Software)
+\end{enumerate}
+
+\newpage
+
+\section{Ersetzungsstrategien}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c|c|c|c|c|c|c|c|c|c|c}
+        \toprule
+         Referenzfolge & & 1 & 2 & 3 & 1 & 2 & 4 & 5 & 1 & 2 & 3  \\
+         \midrule
+         \multirow{3}{*}{Hauptspeicher} & 
+         Kachel 1 & 1 & 1 & 1 & 1 & 1 & 1 & 5 & 5 & 5 & 3 \\ 
+          & Kachel 2 & - & 2 & 2 & 2 & 2 & 2 & 2 & 1 & 1 & 1 \\ 
+           & Kachel 3 &- & - & 3 & 3 & 3 & 4 & 4 & 4 & 2 & 2\\ 
+           \midrule
+           \multirow{3}{*}{Kontrollzustände / Referenzbits} & 
+           Kachel 1 & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 & 0\\ 
+          & Kachel 2 & $>$& 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 \\ 
+           & Kachel 3 & $>$& $>$ & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1\\ 
+           \bottomrule
+    \end{tabular}
+    \caption{Least Recently Used mit 5+3 Seitenersetzungen}
+    \label{tab:my_label}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c|c|c|c|c|c|c|c|c|c|c}
+        \toprule
+         Referenzfolge & & 1 & 2 & 3 & 1 & 2 & 4 & 5 & 1 & 2 & 3  \\
+         \midrule
+         \multirow{3}{*}{Hauptspeicher} & 
+         Kachel 1 & 1 & 1 & 1 & 1 & 1 & 4 & 4 & 4  & 2 & 2 \\ 
+          & Kachel 2 & - & 2 & 2 & 2 & 2 & 2 & 5 & 5 & 5 & 3  \\ 
+           & Kachel 3 & - & - & 3 & 3 & 3 & 3 & 3 & 1 & 1 & 1\\ 
+           \midrule
+           \multirow{3}{*}{Kontrollzustände / Referenzbits} & 
+           Kachel 1 & 0 & 1 & 2 & 3 & 4 & 0 & 1 & 2 & 0 & 1\\ 
+          & Kachel 2 &$>$ & 0 & 1 & 2 & 3 & 4  & 0 & 1 & 2 & 0 \\ 
+           & Kachel 3 & $>$ & $>$ & 0 & 1 & 2 & 3  & 4 & 0 & 1 & 2 \\ 
+          
+           \bottomrule
+    \end{tabular}
+    \caption{FIFO mit 5+3 Seitenersetzungen}
+    \label{tab:my_label}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c|c|c|c|c|c|c|c|c|c|c}
+        \toprule
+         Referenzfolge & & 1 & 2 & 3 & 1 & 2 & 4 & 5 & 1 & 2 & 3  \\
+         \midrule
+         \multirow{3}{*}{Hauptspeicher} &
+         Kachel 1 & 1 & 1 & 1 & 1 & 1 & 4 & 4 & 4 & 2 & 2 \\ 
+          & Kachel 2 & - & 2 & 2 & 2 & 2 & 2 & 5 & 5 &5 & 3 \\ 
+           & Kachel 3 & - & - & 3 & 3 & 3 & 3 & 3 & 1& 1& 1\\ 
+           \midrule
+           \multirow{4}{*}{Kontrollzustände / Referenzbits} & 
+           Kachel 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1& 1 &1 \\ 
+          & Kachel 2 & 0 & 1 & 1 & 1 & 1 & 0& 1 & 1& 0& 1\\ 
+           & Kachel 3 & 0 & 0 & 1 & 1 & 1 & 0& 0 & 1& 0& 0\\ 
+           & Umlaufzeiger & 2 & 3 & 1 & 1 & 1 & 2 & 3 & 1 & 2 & 3 \\ 
+           \bottomrule
+    \end{tabular}
+    \caption{Second Chance Clock mit 5+3 Seitenersetzungen}
+    \label{tab:my_label}
+\end{table}
+
+
+
+
+\end{document}
